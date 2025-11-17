@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Moireu v0.1</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <aside class="sidebar">
+      <div class="logo">❀ Moireu</div>
+      <nav>
+        <button id="nav-myprofile" class="nav-btn">❀ | MY PROFILE</button>
+        <button id="nav-dms" class="nav-btn">❀ | DIRECT MESSAGES</button>
+        <button id="nav-events" class="nav-btn" disabled>❀ | EVENTS</button>
+        <button id="nav-characters" class="nav-btn">❀ | CHARACTERS</button>
+        <button id="nav-universe" class="nav-btn" disabled>❀ | UNIVERSE</button>
+        <button id="nav-settings" class="nav-btn">❀ | SETTINGS</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <!-- Top bar -->
+      <div class="top">
+        <div id="top-title">GLOBAL FEED</div>
+        <div class="top-actions">
+          <button id="btn-create-post" class="primary">[ CREATE POST ]</button>
+        </div>
+      </div>
+
+      <!-- Dynamic views container -->
+      <div id="view-root" class="view-root"></div>
+    </main>
+  </div>
+
+  <template id="tpl-global-feed">
+    <section class="panel">
+      <div class="posts" id="posts-container"></div>
+    </section>
+  </template>
+
+  <template id="tpl-post-editor">
+    <section class="panel editor">
+      <div class="editor-header">POST</div>
+      <div class="field">
+        <label>Display Name</label>
+        <input id="edit-displayName" />
+      </div>
+      <div class="field">
+        <label>Username</label>
+        <input id="edit-username" />
+      </div>
+      <div class="field">
+        <label>Content</label>
+        <textarea id="edit-content" rows="6" placeholder="Write your post..."></textarea>
+      </div>
+      <div class="field row">
+        <div>Likes: <span id="edit-likes">—</span></div>
+        <div>Replies: <span id="edit-replies">—</span></div>
+      </div>
+      <div class="actions">
+        <button id="btn-save-post" class="primary">[ → ] Publish</button>
+        <button id="btn-cancel-post">Cancel</button>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-profile">
+    <section class="panel profile-editor">
+      <div class="breadcrumbs"><button id="btn-back-profile" class="link-btn">←</button></div>
+      <div class="field">
+        <input id="profile-displayName" placeholder="Display Name" />
+        <input id="profile-username" placeholder="Username (no @)" />
+      </div>
+      <div class="field">
+        <textarea id="profile-bio" rows="2" placeholder="Bio text"></textarea>
+      </div>
+      <div class="meta">
+        <button id="btn-open-dm" title="DM">✉︎</button>
+        <div><label>Followers</label><input id="profile-followers" type="number" min="0" /></div>
+      </div>
+
+      <div class="field">
+        <label>❀ | DESCRIPTION:</label>
+        <textarea id="profile-description" rows="3"></textarea>
+      </div>
+
+      <div class="field">
+        <label>❀ | RELATIONSHIPS:</label>
+        <textarea id="profile-relationships" rows="3"></textarea>
+      </div>
+
+      <div class="field row">
+        <label>❀ | POPULARITY: LIKES =</label>
+        <input id="profile-likes-min" type="number" placeholder="min" />
+        <span>to</span>
+        <input id="profile-likes-max" type="number" placeholder="max" />
+      </div>
+
+      <div class="actions">
+        <button id="btn-save-profile" class="primary">[ SAVE ]</button>
+        <button id="btn-delete-profile" class="danger">Delete</button>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-characters-list">
+    <section class="panel">
+      <div class="panel-header">
+        <button id="btn-back-characters" class="link-btn">←</button>
+        <h3>CHARACTER LIST</h3>
+      </div>
+      <div class="actions">
+        <button id="btn-create-character" class="primary">[ CREATE CHARACTER ]</button>
+      </div>
+      <div id="characters-container" class="list"></div>
+    </section>
+  </template>
+
+  <template id="tpl-dm-list">
+    <section class="panel">
+      <div class="panel-header"><h3>DIRECT MESSAGES</h3></div>
+      <div class="actions">
+        <button id="btn-new-conversation" class="primary">❀ | [ NEW CONVERSATION ]</button>
+      </div>
+      <div id="conversations-container" class="list"></div>
+    </section>
+  </template>
+
+  <template id="tpl-dm-chat">
+    <section class="panel dm-chat">
+      <div class="panel-header">
+        <button id="btn-back-dm" class="link-btn">←</button>
+        <div id="dm-title"></div>
+      </div>
+      <div id="dm-messages" class="dm-messages"></div>
+      <div class="dm-composer">
+        <textarea id="dm-input" rows="2" placeholder="Message..."></textarea>
+        <button id="dm-send" class="primary">Send</button>
+      </div>
+    </section>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
