@@ -2,146 +2,191 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Moireu v0.1</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Moireu v1.5 (Pastel Pink)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
   <div id="app">
-    <aside class="sidebar">
-      <div class="logo">❀ Moireu</div>
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="top-left">
+        <button id="btn-sidebar" class="icon-btn" aria-label="Open menu">☰</button>
+        <div class="brand">Moireu</div>
+      </div>
+      <div class="top-actions">
+        <!-- Label updated per v1.5 spec -->
+        <button id="btn-create-post" class="primary-btn">[ CREATE POST ? ]</button>
+      </div>
+    </header>
+
+    <!-- Sidebar / nav (slides in on mobile) -->
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
       <nav>
-        <button id="nav-myprofile" class="nav-btn">❀ | MY PROFILE</button>
-        <button id="nav-dms" class="nav-btn">❀ | DIRECT MESSAGES</button>
-        <button id="nav-events" class="nav-btn" disabled>❀ | EVENTS</button>
-        <button id="nav-characters" class="nav-btn">❀ | CHARACTERS</button>
-        <button id="nav-universe" class="nav-btn" disabled>❀ | UNIVERSE</button>
-        <button id="nav-settings" class="nav-btn">❀ | SETTINGS</button>
+        <button class="nav-btn" data-target="feedTab">❀  | MY PROFILE</button>
+        <button class="nav-btn" data-target="dmsTab">❀  | DIRECT MESSAGES</button>
+        <button class="nav-btn" data-target="eventsTab">❀  | EVENTS</button>
+        <button class="nav-btn" data-target="charactersTab">❀  | CHARACTERS</button>
+        <button class="nav-btn" data-target="universeTab">❀  | UNIVERSE</button>
+        <button class="nav-btn" data-target="settingsTab">❀  | SETTINGS</button>
       </nav>
+      <button id="btn-close-sidebar" class="link-btn">Close</button>
     </aside>
 
-    <main class="main">
-      <!-- Top bar -->
-      <div class="top">
-        <div id="top-title">GLOBAL FEED</div>
-        <div class="top-actions">
-          <button id="btn-create-post" class="primary">[ CREATE POST ]</button>
-        </div>
-      </div>
+    <!-- Main view container -->
+    <main id="view-root" class="view-root">
 
-      <!-- Dynamic views container -->
-      <div id="view-root" class="view-root"></div>
+      <!-- GLOBAL FEED (default) -->
+      <section id="feedTab" class="view">
+        <div class="panel">
+          <h2 class="panel-title">GLOBAL FEED</h2>
+          <div id="postsContainer" class="posts"></div>
+          <div class="load-more-wrap"><button id="btn-load-more" class="link-btn">Load older posts</button></div>
+        </div>
+      </section>
+
+      <!-- POST EDITOR -->
+      <section id="postTab" class="view hidden">
+        <div class="panel editor">
+          <div class="panel-title">POST</div>
+          <label>Display Name</label>
+          <input id="post-displayName" type="text" />
+          <label>Username</label>
+          <input id="post-username" type="text" />
+          <label>Content</label>
+          <textarea id="post-content" rows="6"></textarea>
+          <div class="meta-row">
+            <div>Likes: <span id="post-likes">—</span></div>
+            <div>Replies: <span id="post-replies">—</span></div>
+          </div>
+          <div class="actions">
+            <button id="btn-publish-post" class="primary-btn">[ → ] Publish</button>
+            <button id="btn-cancel-post" class="link-btn">Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHARACTERS LIST -->
+      <section id="charactersTab" class="view hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <button class="back-btn" data-target="feedTab">←</button>
+            <h2>CHARACTER LIST</h2>
+          </div>
+          <div class="actions"><button id="btn-create-character" class="primary-btn">[ CREATE CHARACTER ]</button></div>
+          <div id="charactersContainer" class="list"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE EDITOR (used for MY PROFILE and characters) -->
+      <section id="profileTab" class="view hidden">
+        <div class="panel profile">
+          <div class="panel-head">
+            <button class="back-btn" data-target="charactersTab">←</button>
+          </div>
+
+          <input id="profile-displayName" placeholder="Display Name" />
+          <input id="profile-username" placeholder="Username (no @)" />
+          <textarea id="profile-bio" rows="2" placeholder="Bio text"></textarea>
+
+          <div class="meta-row">
+            <button id="btn-open-dm" class="icon-btn">✉︎</button>
+            <label>Followers <input id="profile-followers" type="number" min="0" /></label>
+          </div>
+
+          <label>❀ | DESCRIPTION:</label>
+          <textarea id="profile-description" rows="3"></textarea>
+
+          <label>❀ | RELATIONSHIPS:</label>
+          <textarea id="profile-relationships" rows="3"></textarea>
+
+          <div class="meta-row">
+            <label>❀ | POPULARITY: LIKES =</label>
+            <input id="profile-likes-min" type="number" placeholder="min" />
+            <span>to</span>
+            <input id="profile-likes-max" type="number" placeholder="max" />
+          </div>
+
+          <div class="actions">
+            <button id="btn-save-profile" class="primary-btn">[ SAVE ]</button>
+            <button id="btn-delete-profile" class="link-btn">Delete</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- UNIVERSE (v1.5) -->
+      <section id="universeTab" class="view hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <button class="back-btn" data-target="feedTab">←</button>
+            <h2>UNIVERSE</h2>
+          </div>
+
+          <!-- Editable universe textbox and save button (✧) -->
+          <label class="sr-only" for="universeText">Universe Description</label>
+          <textarea id="universeText" rows="8" placeholder="Write the universe description here..."></textarea>
+          <div class="actions">
+            <button id="btn-save-universe" class="primary-btn">✧ Save</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- MY PROFILE quick access -->
+      <section id="myProfileQuick" class="view hidden">
+        <!-- reserved if prefer separate view -->
+      </section>
+
+      <!-- DIRECT MESSAGES list (updated header/back button) -->
+      <section id="dmsTab" class="view hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <button class="back-btn" data-target="feedTab">←</button>
+            <h2>DIRECT MESSAGES</h2>
+          </div>
+          <!-- Button renamed per v1.5 spec -->
+          <div class="actions"><button id="btn-new-conversation" class="primary-btn">❀  | NEW CONVERSATION ?</button></div>
+          <div id="conversationsContainer" class="list"></div>
+        </div>
+      </section>
+
+      <!-- DM CHAT -->
+      <section id="dmTab" class="view hidden">
+        <div class="panel dm-panel">
+          <div class="panel-head">
+            <button class="back-btn" data-target="dmsTab">←</button>
+            <div id="dmTitle"></div>
+          </div>
+          <div id="dmMessages" class="dm-messages"></div>
+          <div class="dm-composer">
+            <textarea id="dmInput" rows="2" placeholder="Message..."></textarea>
+            <button id="dmSend" class="primary-btn">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVENTS (placeholder) -->
+      <section id="eventsTab" class="view hidden">
+        <div class="panel">
+          <h2>Events</h2>
+          <p>(Events UI placeholder)</p>
+        </div>
+      </section>
+
+      <!-- UNIVERSE placeholder removed (we have a full universeTab) -->
+
+      <!-- SETTINGS (placeholder) -->
+      <section id="settingsTab" class="view hidden">
+        <div class="panel">
+          <h2>Settings</h2>
+          <p>(Settings placeholder)</p>
+        </div>
+      </section>
+
     </main>
   </div>
 
-  <template id="tpl-global-feed">
-    <section class="panel">
-      <div class="posts" id="posts-container"></div>
-    </section>
-  </template>
-
-  <template id="tpl-post-editor">
-    <section class="panel editor">
-      <div class="editor-header">POST</div>
-      <div class="field">
-        <label>Display Name</label>
-        <input id="edit-displayName" />
-      </div>
-      <div class="field">
-        <label>Username</label>
-        <input id="edit-username" />
-      </div>
-      <div class="field">
-        <label>Content</label>
-        <textarea id="edit-content" rows="6" placeholder="Write your post..."></textarea>
-      </div>
-      <div class="field row">
-        <div>Likes: <span id="edit-likes">—</span></div>
-        <div>Replies: <span id="edit-replies">—</span></div>
-      </div>
-      <div class="actions">
-        <button id="btn-save-post" class="primary">[ → ] Publish</button>
-        <button id="btn-cancel-post">Cancel</button>
-      </div>
-    </section>
-  </template>
-
-  <template id="tpl-profile">
-    <section class="panel profile-editor">
-      <div class="breadcrumbs"><button id="btn-back-profile" class="link-btn">←</button></div>
-      <div class="field">
-        <input id="profile-displayName" placeholder="Display Name" />
-        <input id="profile-username" placeholder="Username (no @)" />
-      </div>
-      <div class="field">
-        <textarea id="profile-bio" rows="2" placeholder="Bio text"></textarea>
-      </div>
-      <div class="meta">
-        <button id="btn-open-dm" title="DM">✉︎</button>
-        <div><label>Followers</label><input id="profile-followers" type="number" min="0" /></div>
-      </div>
-
-      <div class="field">
-        <label>❀ | DESCRIPTION:</label>
-        <textarea id="profile-description" rows="3"></textarea>
-      </div>
-
-      <div class="field">
-        <label>❀ | RELATIONSHIPS:</label>
-        <textarea id="profile-relationships" rows="3"></textarea>
-      </div>
-
-      <div class="field row">
-        <label>❀ | POPULARITY: LIKES =</label>
-        <input id="profile-likes-min" type="number" placeholder="min" />
-        <span>to</span>
-        <input id="profile-likes-max" type="number" placeholder="max" />
-      </div>
-
-      <div class="actions">
-        <button id="btn-save-profile" class="primary">[ SAVE ]</button>
-        <button id="btn-delete-profile" class="danger">Delete</button>
-      </div>
-    </section>
-  </template>
-
-  <template id="tpl-characters-list">
-    <section class="panel">
-      <div class="panel-header">
-        <button id="btn-back-characters" class="link-btn">←</button>
-        <h3>CHARACTER LIST</h3>
-      </div>
-      <div class="actions">
-        <button id="btn-create-character" class="primary">[ CREATE CHARACTER ]</button>
-      </div>
-      <div id="characters-container" class="list"></div>
-    </section>
-  </template>
-
-  <template id="tpl-dm-list">
-    <section class="panel">
-      <div class="panel-header"><h3>DIRECT MESSAGES</h3></div>
-      <div class="actions">
-        <button id="btn-new-conversation" class="primary">❀ | [ NEW CONVERSATION ]</button>
-      </div>
-      <div id="conversations-container" class="list"></div>
-    </section>
-  </template>
-
-  <template id="tpl-dm-chat">
-    <section class="panel dm-chat">
-      <div class="panel-header">
-        <button id="btn-back-dm" class="link-btn">←</button>
-        <div id="dm-title"></div>
-      </div>
-      <div id="dm-messages" class="dm-messages"></div>
-      <div class="dm-composer">
-        <textarea id="dm-input" rows="2" placeholder="Message..."></textarea>
-        <button id="dm-send" class="primary">Send</button>
-      </div>
-    </section>
-  </template>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
