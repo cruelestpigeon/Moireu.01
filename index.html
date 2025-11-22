@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Moireu v1.5 (Pastel Pink)</title>
+  <title>Moireu v1.8 (Pastel Pink — Replies)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -17,7 +17,6 @@
         <div class="brand">Moireu</div>
       </div>
       <div class="top-actions">
-        <!-- Label updated per v1.5 spec -->
         <button id="btn-create-post" class="primary-btn">[ CREATE POST ? ]</button>
       </div>
     </header>
@@ -85,67 +84,65 @@
         <div class="panel profile">
           <div class="panel-head">
             <button class="back-btn" data-target="charactersTab">←</button>
+            <h2 class="visually-profile-title">PROFILE</h2>
           </div>
 
-          <input id="profile-displayName" placeholder="Display Name" />
-          <input id="profile-username" placeholder="Username (no @)" />
-          <textarea id="profile-bio" rows="2" placeholder="Bio text"></textarea>
+          <input id="profile-displayName" class="profile-displayName" placeholder="Display Name" />
+          <div class="username-wrap">
+            <input id="profile-username" class="profile-username" placeholder="username (no @)" />
+          </div>
+          <textarea id="profile-bio" rows="2" class="profile-bio" placeholder="Bio text"></textarea>
 
-          <div class="meta-row">
+          <div class="meta-row profile-meta">
             <button id="btn-open-dm" class="icon-btn">✉︎</button>
-            <label>Followers <input id="profile-followers" type="number" min="0" /></label>
+            <div class="followers-wrap">
+              <input id="profile-followers" type="number" min="0" class="profile-followers" />
+              <span class="followers-label">Followers</span>
+            </div>
           </div>
 
-          <label>❀ | DESCRIPTION:</label>
-          <textarea id="profile-description" rows="3"></textarea>
+          <label class="section-label">❀ | DESCRIPTION:</label>
+          <textarea id="profile-description" class="profile-description" rows="3"></textarea>
 
-          <label>❀ | RELATIONSHIPS:</label>
-          <textarea id="profile-relationships" rows="3"></textarea>
+          <label class="section-label">❀ | RELATIONSHIPS:</label>
+          <textarea id="profile-relationships" class="profile-relationships" rows="3"></textarea>
 
           <div class="meta-row">
-            <label>❀ | POPULARITY: LIKES =</label>
+            <label class="section-label">❀ | POPULARITY: LIKES =</label>
             <input id="profile-likes-min" type="number" placeholder="min" />
-            <span>to</span>
+            <span class="to-text">to</span>
             <input id="profile-likes-max" type="number" placeholder="max" />
           </div>
 
           <div class="actions">
-            <button id="btn-save-profile" class="primary-btn">[ SAVE ]</button>
+            <button id="btn-save-profile" class="primary-btn">[ ✧ ]</button>
             <button id="btn-delete-profile" class="link-btn">Delete</button>
           </div>
         </div>
       </section>
 
-      <!-- UNIVERSE (v1.5) -->
+      <!-- UNIVERSE -->
       <section id="universeTab" class="view hidden">
         <div class="panel">
           <div class="panel-head">
             <button class="back-btn" data-target="feedTab">←</button>
             <h2>UNIVERSE</h2>
           </div>
-
-          <!-- Editable universe textbox and save button (✧) -->
           <label class="sr-only" for="universeText">Universe Description</label>
           <textarea id="universeText" rows="8" placeholder="Write the universe description here..."></textarea>
           <div class="actions">
-            <button id="btn-save-universe" class="primary-btn">✧ Save</button>
+            <button id="btn-save-universe" class="primary-btn">[ ✧ ]</button>
           </div>
         </div>
       </section>
 
-      <!-- MY PROFILE quick access -->
-      <section id="myProfileQuick" class="view hidden">
-        <!-- reserved if prefer separate view -->
-      </section>
-
-      <!-- DIRECT MESSAGES list (updated header/back button) -->
+      <!-- DIRECT MESSAGES -->
       <section id="dmsTab" class="view hidden">
         <div class="panel">
           <div class="panel-head">
             <button class="back-btn" data-target="feedTab">←</button>
             <h2>DIRECT MESSAGES</h2>
           </div>
-          <!-- Button renamed per v1.5 spec -->
           <div class="actions"><button id="btn-new-conversation" class="primary-btn">❀  | NEW CONVERSATION ?</button></div>
           <div id="conversationsContainer" class="list"></div>
         </div>
@@ -166,7 +163,56 @@
         </div>
       </section>
 
-      <!-- EVENTS (placeholder) -->
+      <!-- REPLIES (new per-post replies thread) -->
+      <section id="repliesTab" class="view hidden">
+        <div class="panel replies-panel">
+          <div class="panel-head">
+            <button class="back-btn" data-target="feedTab">←</button>
+            <h2>REPLIES</h2>
+          </div>
+
+          <!-- The selected post is rendered here -->
+          <div id="repliesPost" class="post"></div>
+
+          <div class="actions">
+            <button id="btn-new-reply" class="primary-btn">[ REPLY ? ]</button>
+          </div>
+
+          <div class="completed-replies">
+            <h3 class="panel-title">Completed Replies</h3>
+            <div id="repliesContainer" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BLANK REPLY editor -->
+      <section id="replyEditorTab" class="view hidden">
+        <div class="panel editor reply-editor">
+          <div class="panel-head">
+            <button class="back-btn" data-target="repliesTab">←</button>
+            <h2>REPLY</h2>
+          </div>
+
+          <div class="reply-meta">
+            <div id="reply-editor-displayName" class="reply-displayName"></div>
+            <div id="reply-editor-username" class="reply-username muted"></div>
+          </div>
+
+          <div class="reply-target muted" id="reply-target-line"></div>
+
+          <label class="sr-only" for="reply-content">Reply text</label>
+          <textarea id="reply-content" rows="5" placeholder="Write your reply..."></textarea>
+
+          <div class="meta-row">
+            <div>Likes: <span id="reply-likes">—</span></div>
+            <div class="actions">
+              <button id="btn-publish-reply" class="primary-btn">[ → ]</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVENTS -->
       <section id="eventsTab" class="view hidden">
         <div class="panel">
           <h2>Events</h2>
@@ -174,9 +220,7 @@
         </div>
       </section>
 
-      <!-- UNIVERSE placeholder removed (we have a full universeTab) -->
-
-      <!-- SETTINGS (placeholder) -->
+      <!-- SETTINGS -->
       <section id="settingsTab" class="view hidden">
         <div class="panel">
           <h2>Settings</h2>
